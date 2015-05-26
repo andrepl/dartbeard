@@ -63,6 +63,8 @@ class AppServer {
   Timer autoSearchTimer;
   Timer autoUpdateTimer;
 
+  String get serverBinDirectory => path.dirname(Platform.script.toString()).substring(7);
+
   AppServer() {
     // One time initialization of components.
     db.changes.listen(onChangeEvent);
@@ -74,7 +76,7 @@ class AppServer {
 
     router = (route.router()
       ..get('/ws', sWs.webSocketHandler(handleWebSocketConnect)))
-      ..add('', ['GET'], createStaticHandler("../static",  defaultDocument: 'index.html'), exactMatch: false);
+      ..add('', ['GET'], createStaticHandler(path.normalize(path.join(serverBinDirectory, '../static')),  defaultDocument: 'index.html'), exactMatch: false);
 
     handler = const shelf.Pipeline()
     .addMiddleware(shelf.logRequests(logger: logRequest))
