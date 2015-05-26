@@ -57,7 +57,7 @@ class Conf {
   }
 
   Conf._internal() {
-    _configFile = new File(path.join(Directory.current.path, 'settings.json'));
+    _configFile = new File(path.join(path.dirname(Platform.script.toString()), 'settings.json'));
     reload();
   }
 
