@@ -16,10 +16,9 @@ dependencies:
     path: ../models
 
   postgresql:
-      path: ../../dart_postgresql
-#      git:
-#          url: git://github.com/andrepl/dart_postgresql.git
-#          ref: '4959669'
+      git:
+          url: git://github.com/andrepl/dart_postgresql.git
+          ref: '8af5381'
 
   shelf: '>=0.6.0 <0.7.0'
   shelf_route: '>=0.12.0'

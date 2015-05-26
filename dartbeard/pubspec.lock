@@ -61,9 +61,10 @@ packages:
     version: "1.4.3"
   postgresql:
     description:
-      path: "../../dart_postgresql"
-      relative: true
-    source: path
+      ref: "8af5381"
+      resolved-ref: "8af53811a4c34c02e8aa397ee5b0c2284f9e6220"
+      url: "git://github.com/andrepl/dart_postgresql.git"
+    source: git
     version: "0.3.0+2"
   quiver:
     description: quiver
