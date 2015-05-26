@@ -697,7 +697,7 @@ class AppServer {
   }
 
   Future rpc_updateSeries(CompatibleWebSocket socket, Map args) {
-    updateSeries(args["id"], libraryLocation: args["libraryLocation"], scan: args["scan"] == true);
+    updateSeries(args["id"], libraryLocation: args["libraryLocation"], scan: args["scan"] == true || args.containsKey("libraryLocation"));
     return new Future.value('ok');
   }
 
