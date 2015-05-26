@@ -1,3 +1,8 @@
+create table if not exists btn_meta (
+  "lastTorrentTime" INT,
+  "lastTorrentIds" TEXT
+);
+
 --
 -- series
 --
