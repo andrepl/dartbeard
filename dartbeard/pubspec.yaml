@@ -1,0 +1,28 @@
+name: dartbeard
+version: 0.0.1
+description: A web server built using the shelf package.
+
+environment:
+  sdk: '>=1.0.0 <2.0.0'
+
+dependencies:
+  http: ">=0.11.2"
+  intl: '>=0.12.2'
+  path: ">=1.3.5"
+  logging: '>=0.11.1'
+  logging_handlers: '>=0.8.0'
+
+  models:
+    path: ../models
+
+  postgresql:
+      path: ../../dart_postgresql
+#      git:
+#          url: git://github.com/andrepl/dart_postgresql.git
+#          ref: '4959669'
+
+  shelf: '>=0.6.0 <0.7.0'
+  shelf_route: '>=0.12.0'
+  shelf_web_socket: '>=0.0.1+2'
+  shelf_static: '>=0.2.2'
+  xml: ">=2.0.0 <3.0.0"
