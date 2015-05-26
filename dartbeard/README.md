@@ -1,3 +1,3 @@
-# sickdart
+# Dartbeard
 
-A web server built using [Shelf](https://pub.dartlang.org/packages/shelf).
+Server side component to DartBeard.
