@@ -88,7 +88,9 @@ class Conf {
 
   void reload() {
     if (!_configFile.existsSync()) {
-      _configFile.writeAsStringSync(JSON.encode(_defaultConfig));
+      Map defaults = {};
+      _defaultConfig.forEach((k, v) => defaults[MirrorSystem.getName(k)] = v);
+      _configFile.writeAsStringSync(JSON.encode(defaults));
     }
     Map parsed = JSON.decode(_configFile.readAsStringSync());
 

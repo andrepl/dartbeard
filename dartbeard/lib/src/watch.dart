@@ -51,15 +51,17 @@ class Watcher {
     //print("removed ${removed}");
   }
 
-  void setRootDirectory(String root) {
+  void setRootDirectory(root) {
     subscribed.forEach((k, v) => v.cancel());
     subscribed.clear();
-    this.root = new Directory(root);
-    subscribed[this.root] = this.root.watch().listen((event) => onEvent(this.root, event), onDone: () => onDone(this.root));
-    this.root.list(recursive: true).where((e) => e is Directory).listen((Directory entry) {
-      subscribed[entry] = entry.watch().listen((event) => onEvent(entry, event), onDone: () => onDone(entry));
-    }, onDone: () {
-      // TODO: Log something
-   });
+    if (root != null) {
+      this.root = new Directory(root);
+      subscribed[this.root] = this.root.watch().listen((event) => onEvent(this.root, event), onDone: () => onDone(this.root));
+      this.root.list(recursive: true).where((e) => e is Directory).listen((Directory entry) {
+        subscribed[entry] = entry.watch().listen((event) => onEvent(entry, event), onDone: () => onDone(entry));
+      }, onDone: () {
+        // TODO: Log something
+      });
+    }
   }
 }
