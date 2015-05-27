@@ -15,7 +15,7 @@ class AddSeriesPage extends  Page {
   List<String> EVENTS = ['series::update'];
   Timer searchTimer = null;
 
-  getInitialState() => {'availableDirectories': [], 'searchResults': [], 'searchString': '', 'selectedDirectory': null};
+  getInitialState() => {'availableDirectories': [], 'searchResults': [], 'searchString': '', 'selectedDirectory': null, 'searchInProgress': false};
 
   componentDidMount(rootNode) async {
     await super.componentDidMount(rootNode);
@@ -35,6 +35,7 @@ class AddSeriesPage extends  Page {
       label({}, "Series Search: "),
       input({'onChange': onSearchStringChange, 'value': state['searchString']}),
     ];
+
     var available = state['availableDirectories'];
     if (available.length > 0) {
       print("AVAIL DIRS: ${available.length} $available");
@@ -50,12 +51,16 @@ class AddSeriesPage extends  Page {
     ]);
   }
 
-  doSearch() async {
-    var result = await ws.rpc("new_series_search", args: {"seriesName": state['searchString']});
-    setState({'searchResults': result['result'].map((m) => new Series.fromMap(m))});
+  doSearch() {
+    setState({'searchResults': []});
+    ws.rpc("new_series_search", args: {"seriesName": state['searchString']}).then((result) {
+      setState({'searchInProgress': false, 'searchResults': result['result'].map((m) => new Series.fromMap(m))});
+    });
+
   }
 
   triggerSearch(int delay) {
+    setState({'searchInProgress': true});
     if (searchTimer != null) {
       searchTimer.cancel();
     }
@@ -82,6 +87,15 @@ class AddSeriesPage extends  Page {
   }
 
   renderResults() {
+    if (state['searchInProgress']) {
+      return [h2({'style': {'textAlign': 'center'}}, 'Searching...')];
+    } else if (state['searchResults'].length == 0) {
+      if (state['searchString'] != null && state['searchString'].length > 0) {
+        return [h2({'style': {'textAlign': 'center'}}, 'No Results')];
+      } else {
+        return [];
+      }
+    }
     return state['searchResults'].map((s) => div({'className': 'list-item' + (s.inLibrary ? ' in-library' : '')}, [
       s.banner == null ? h1({}, s.name) : img({'className': 'banner', 'src': '/imgcache/thetvdb.com/banners/' + s.banner}),
       div({'className': 'series-detail'}, [
