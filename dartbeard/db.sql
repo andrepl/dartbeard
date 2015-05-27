@@ -74,7 +74,7 @@ create table if not exists episode (
   "name" text null,
   "director" text null,
   "writer" text null,
-  "firstAired" text null,
+  "firstAired" timestamptz null,
   "overview" text null,
   "seasonNumber" int not null,
   "number" int not null,

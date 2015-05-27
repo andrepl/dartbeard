@@ -3,7 +3,6 @@
 .pub/
 build/
 packages
-
 # Or the files created by dart2js.
 *.dart.js
 *.js_
@@ -15,5 +14,6 @@ packages
 *.iml
 
 
-# our settings file.
 dartbeard/bin/settings.json
+dartbeard/cache
+dartbeard/static

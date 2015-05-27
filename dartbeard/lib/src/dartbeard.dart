@@ -19,6 +19,7 @@ import 'package:dartbeard/src/conf.dart';
 import 'package:dartbeard/src/tvdb.dart';
 import 'package:dartbeard/src/btn.dart';
 import 'package:dartbeard/src/transmission.dart';
+import 'package:dartbeard/src/imagecache.dart';
 import 'package:dartbeard/src/database.dart';
 import 'package:dartbeard/src/watch.dart';
 import 'package:dartbeard/src/plex.dart';
@@ -38,6 +39,7 @@ class AppServer {
   final BTN btn = new BTN();
   final Watcher watcher = new Watcher();
   final Plex plex = new Plex();
+  final ImageCache imageCache = new ImageCache();
 
   PostProcessor postProcessor;
 
@@ -76,6 +78,7 @@ class AppServer {
 
     router = (route.router()
       ..get('/ws', sWs.webSocketHandler(handleWebSocketConnect)))
+      ..add('/imgcache/', ['GET'], imageCache.handleRequest, exactMatch: false)
       ..add('', ['GET'], createStaticHandler(path.normalize(path.join(serverBinDirectory, '../static')),  defaultDocument: 'index.html'), exactMatch: false);
 
     handler = const shelf.Pipeline()
@@ -138,6 +141,13 @@ class AppServer {
 
     btn.apiKey = conf.btn_api_key;
     tvdb.apiKey = conf.tvdb_api_key;
+
+    // setup image cache
+    if (conf.cache_directory.startsWith("/")) {
+      imageCache.cacheDirectory = new Directory(conf.cache_directory);
+    } else {
+      imageCache.cacheDirectory = new Directory(path.normalize(path.join(serverBinDirectory, '../', conf.cache_directory)));
+    }
 
     // Reschedule the timers.
     if (autoScanTimer != null) {

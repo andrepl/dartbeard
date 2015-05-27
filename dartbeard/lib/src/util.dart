@@ -78,6 +78,11 @@ String cleanSeriesName(String name) {
   });
 }
 
+DateTime toSecondResolution(DateTime dt) {
+  if (dt.millisecond == 0) return dt;
+  return dt.subtract(new Duration(milliseconds: dt.millisecond));
+}
+
 FileInfo getFileInfo(String filename) {
   Match m = seasonEpPattern.firstMatch(filename);
   if (m != null) {

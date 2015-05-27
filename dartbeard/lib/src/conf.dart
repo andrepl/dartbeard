@@ -14,6 +14,7 @@ class Conf {
   }
 
   static Map _defaultConfig = {
+    new Symbol('cache_directory'): 'cache',
     new Symbol('username'): "admin",
     new Symbol('password'): "admin",
     new Symbol('transmission_host'): "localhost",
@@ -28,6 +29,7 @@ class Conf {
     new Symbol('plex_port'): 32400,
   };
 
+  String get cache_directory => _getProp(new Symbol('cache_directory'));
   String get username => _getProp(new Symbol('username'));
   String get password => _getProp(new Symbol('password'));
   String get transmission_host => _getProp(new Symbol('transmission_host'));
