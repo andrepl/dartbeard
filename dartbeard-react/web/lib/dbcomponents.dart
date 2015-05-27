@@ -42,7 +42,7 @@ class TorrentForm extends Component {
         td({}, "${choice['Seeders']}"),
         td({}, "${choice['Leechers']}")
       ])));
-      trows.add(tr({}, td({'style': {'text-align': 'right'}, 'colSpan': 4}, button({'type': 'submit'}, 'Add Torrent'))));
+      trows.add(tr({}, td({'style': {'textAlign': 'right'}, 'colSpan': 4}, button({'type': 'submit'}, 'Add Torrent'))));
       return table({'className': 'torrent-choices'}, trows);
     } else {
       return table({}, [

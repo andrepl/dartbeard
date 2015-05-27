@@ -400,7 +400,7 @@ class SeriesDetailPage extends  Page {
               ]),
 
               tr({},state['renameFocused'] ? td({'colSpan': 4}, renderExampleRename()) : td({'colSpan': 4}, '\u00a0')),
-              tr({}, td({'colSpan': 4, 'style': {'text-align': 'right'}}, formDirty ? button({'onClick': onSaveChangesClick}, 'Save Changes') : ''))
+              tr({}, td({'colSpan': 4, 'style': {'textAlign': 'right'}}, formDirty ? button({'onClick': onSaveChangesClick}, 'Save Changes') : ''))
 
             ])),
             div({'className': 'button-bar'}, [

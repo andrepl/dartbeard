@@ -100,7 +100,7 @@ class SeriesListPage extends Page {
       div({}, input({'type': 'text', 'placeholder': 'Search', 'onChange': onSearchChange})),
       div({}, select({'placeholder': 'Sort By', 'onChange': onSortChange}, [
         option({'value': 'sortableName'}, 'Name'),
-        option({'value': 'firstAired'}, 'First Aired'),
+        option({'value': 'sortableFirstAired'}, 'First Aired'),
       ]))
     ]),
     div({'className': 'scroll-pane', 'key': 'scroll-pane'},

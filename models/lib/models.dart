@@ -77,10 +77,11 @@ class Series {
   bool ignore = false;
 
   String renamePattern;
-  String get firstAiredDate => firstAired == null ? null : dateFormat.format(firstAired);
   String preferredResolution;
   bool selected;
   int index;
+
+  String get firstAiredDate => firstAired == null ? null : dateFormat.format(firstAired);
 
   String get sortableName {
     String ln = name.toLowerCase();
@@ -90,11 +91,17 @@ class Series {
       return name.substring(2);
     } else if (ln.startsWith("an ")) {
       return name.substring(3);
-
     }
     return name;
   }
 
+  String get sortableFirstAired {
+    if (firstAired == null) {
+      return '99990101';
+    } else {
+      return formatFirstAired('YYYYMMdd');
+    }
+  }
   Series();
 
   String get airsAtString {
