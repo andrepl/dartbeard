@@ -500,8 +500,13 @@ class AppServer {
       }).toList();
     }
     List<Episode> wantedEps = await db.getWantedEpisodes();
-
+    if (wantedEps.length == 0) {
+      return;
+    }
     List seriesIds = new Set.from(wantedEps.map((e) => e.seriesId)).toList();
+    if (seriesIds.length == 0) {
+      return;
+    }
     logger.info("Torrent search for ${seriesIds.length} series.");
     Map query = {'tvdb': seriesIds, 'time': '>=${meta["lastTorrentTime"]}', 'category': 'Episode'};
     List<Map> torrents = await btn.search(query);
