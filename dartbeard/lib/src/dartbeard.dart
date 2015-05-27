@@ -323,7 +323,8 @@ class AppServer {
     logger.info("Scanning ${series.name}...");
     await db.setSeriesUpdating(seriesId, true);
     List<Episode> episodes = await db.getEpisodes(seriesId);
-    List<String> files = (await getFilesRecursively(path.join(conf.library_root, series.libraryLocation))).map((f) => f.path).toList();
+    String seriesPath = path.join(conf.library_root, series.libraryLocation);
+    List<String> files = (await getFilesRecursively(seriesPath)).map((f) => path.relative(f.path, from: seriesPath)).toList();
     List<FileInfo> matchInfo = files.map((f) => getFileInfo(f)).toList();
 
     int newFiles = 0;

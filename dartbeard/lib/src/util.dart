@@ -73,9 +73,10 @@ Future<List<File>> getFilesRecursively(String path) async {
 }
 
 String cleanSeriesName(String name) {
-  return name.replaceAllMapped(new RegExp(r'[^\w\d\s:\._\(\)-]'), (m) {
-    return '.';
-  });
+  return name;
+//  return name.replaceAllMapped(new RegExp(r'[^\w\d\s:\._\(\)-]'), (m) {
+//    return '.';
+//  });
 }
 
 DateTime toSecondResolution(DateTime dt) {
