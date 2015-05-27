@@ -4,10 +4,11 @@ import 'dart:async';
 
 import 'dart:convert';
 import "dart:io";
+import 'package:logging/logging.dart';
 
 
 class BTN {
-
+  final logger = new Logger("dartbeard");
   String apiKey;
   int reqId = 0;
   HttpClient client = new HttpClient();
@@ -25,7 +26,13 @@ class BTN {
 
   search(query) async {
     HttpClientResponse resp = await request("getTorrents", [apiKey, query, 1000, 0]);
-    Map response = JSON.decode((await UTF8.decodeStream(resp)));
+    Map response;
+    try {
+      response = JSON.decode((await UTF8.decodeStream(resp)));
+    } on FormatException catch (e, stack) {
+      logger.severe("BTN Returned error response", e, stack);
+      return [];
+    }
     if (int.parse(response['result']['results']) > 0) {
       return response['result']['torrents'].values.toList();
     } else {
