@@ -21,7 +21,7 @@ class SeriesItem extends Component {
   render() {
     Series s = this.props['series'];
     return div({'className': 'list-item'}, [
-      a({'href': '#series/${s.id}'}, img({'className': 'banner', 'src': (s.banner == null ? null : '//thetvdb.com/banners/' + s.banner)})),
+      a({'href': '#series/${s.id}'}, img({'className': 'banner', 'src': (s.banner == null ? null : '/imgcache/thetvdb.com/banners/' + s.banner)})),
       seriesProgress({'value': s.downloadedEpisodes, 'maxvalue': s.knownEpisodes}),
       div({'className': 'series-detail'}, [
         div({}, [label({}, 'Status:'), span({}, s.status)]),

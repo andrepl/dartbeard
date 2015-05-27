@@ -364,7 +364,7 @@ class SeriesDetailPage extends  Page {
       getHeader(s.name, null),
       div({'className': 'scroll-pane', 'key': 'scroll-pane'}, new List.from([
         div({'className': 'series-detail-header'}, [
-          div({'className': 'series-detail-poster-wrap'}, img({'className': 'poster', 'src': (s.poster == null ? null : '//thetvdb.com/banners/' + s.poster)})),
+          div({'className': 'series-detail-poster-wrap'}, img({'className': 'poster', 'src': (s.poster == null ? null : '/imgcache/thetvdb.com/banners/' + s.poster)})),
           div({'className': 'series-detail-header-content'}, [
             table({'className': 'series-detail'}, [
               tbody({},[

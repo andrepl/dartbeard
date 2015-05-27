@@ -1,5 +1,6 @@
 import 'dart:html';
 import 'dart:async';
+import 'package:intl/intl.dart';
 import 'package:react/react_client.dart' as reactClient;
 import 'package:react/react.dart';
 import 'package:route_hierarchical/client.dart';
@@ -12,7 +13,7 @@ class UpcomingItem extends Component {
   render() {
     Episode e = this.props['episode'];
     return div({'className': 'list-item'}, [
-      a({'href': '#series/${e.seriesId}'}, img({'className': 'banner', 'src': (e.series.banner == null ? null : '//thetvdb.com/banners/' + e.series.banner)})),
+      a({'href': '#series/${e.seriesId}'}, img({'className': 'banner', 'src': (e.series.banner == null ? null : '/imgcache/thetvdb.com/banners/' + e.series.banner)})),
       div({'className': 'series-detail'}, [
         div({}, [label({}, '${e.formatFirstAired('jm')}:'), span({}, '${e.seasonEpisode} - ${e.name}')]),
       ])
@@ -36,10 +37,21 @@ class UpcomingPage extends Page {
   List withHeaders() {
     List result = [];
     String lastDate = null;
+    Map relativeHeaders = {
+      new DateFormat("YYYYMMdd").format(new DateTime.now().subtract(new Duration(days:1))): 'Yesterday',
+      new DateFormat("YYYYMMdd").format(new DateTime.now()): 'Today',
+      new DateFormat("YYYYMMdd").format(new DateTime.now().add(new Duration(days:1))): 'Tomorrow'
+    };
+
     for (Episode e in this.state['episodeList']) {
       if (!episodeMatch(e)) continue;
       if (lastDate == null || lastDate != e.firstAiredDate) {
-        result.add(div({'className': 'date-header'}, e.formatFirstAired('EEEE, MMM d')));
+        String dateStr = e.formatFirstAired('EEEE, MMM d');
+        var epDate = e.formatFirstAired('YYYYMMdd');
+        if (relativeHeaders.containsKey(epDate)) {
+          dateStr += ' [${relativeHeaders[epDate]}]';
+        }
+        result.add(div({'className': 'date-header'}, dateStr));
         lastDate = e.firstAiredDate;
       }
       result.add(upcomingItem({'episode': e, 'key': e.id}));

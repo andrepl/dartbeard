@@ -83,7 +83,7 @@ class AddSeriesPage extends  Page {
 
   renderResults() {
     return state['searchResults'].map((s) => div({'className': 'list-item' + (s.inLibrary ? ' in-library' : '')}, [
-      s.banner == null ? h1({}, s.name) : img({'className': 'banner', 'src': '//thetvdb.com/banners/' + s.banner}),
+      s.banner == null ? h1({}, s.name) : img({'className': 'banner', 'src': '/imgcache/thetvdb.com/banners/' + s.banner}),
       div({'className': 'series-detail'}, [
         div({}, [label({}, 'Network:'), span({}, s.network)]),
         div({}, [label({}, 'First Aired:'), span({}, s.firstAiredDate)]),
