@@ -116,7 +116,7 @@ class Series {
       'contentRating': contentRating, 'network': network, 'runTime': runTime, 'banner': banner, 'poster': poster,
       'fanart': fanart, 'language': language, 'status': status, 'libraryLocation': libraryLocation, 'updating': updating,
       'inLibrary': inLibrary, 'knownEpisodes': knownEpisodes, 'downloadedEpisodes': downloadedEpisodes, 'renamePattern': renamePattern,
-      'preferredResolution': preferredResolution, 'ignore': ignore, 'lastUpdated': _dtToMillis(lastUpdated),
+      'preferredResolution': preferredResolution, 'ignore': ignore, 'lastUpdated': _dtToMillis(lastUpdated), 'sortableFirstAired': sortableFirstAired,
       'sortableName': name == null ? null : sortableName, 'episodes': (episodes == null) ? null : episodes.map((e) => e.toMap()).toList()
     };
     return map;
