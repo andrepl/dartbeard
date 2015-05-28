@@ -84,6 +84,8 @@ class SeriesListPage extends Page {
     this.setState({'sortBy': event.currentTarget.value});
     print(event.currentTarget.value);
     this.state['seriesList'].sort((a,b) => a.toMap()[event.currentTarget.value].compareTo(b.toMap()[event.currentTarget.value]));
+    this.setState({'seriesList': this.state['seriesList']});
+
   }
 
   void onClickRefresh(id, SyntheticMouseEvent event) {
