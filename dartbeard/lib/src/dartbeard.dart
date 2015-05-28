@@ -700,6 +700,7 @@ class AppServer {
     } else if (args.containsKey('seasonNumber') && args.containsKey('seriesId')) {
       relatedContent = 'season:${args['seriesId']}:${args['seasonNumber']}';
     }
+    logger.info("Adding Torrent ${args['url']} with relatedContent: ${relatedContent}");
     var resp = await transmission.addTorrent(args['url'], relatedContent);
 
     if (resp.containsKey("torrent-added")) {

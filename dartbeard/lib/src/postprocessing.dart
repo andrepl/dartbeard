@@ -13,10 +13,12 @@ import "package:dartbeard/src/transmission.dart";
 import "package:dartbeard/src/btn.dart";
 import 'package:dartbeard/src/util.dart';
 import 'package:dartbeard/src/plex.dart';
+import 'package:logging/logging.dart';
 
 
 class PostProcessor {
 
+  final Logger logger = new Logger('dartbeard');
   Conf conf;
   Database db;
   TVDB tvdb;
@@ -38,6 +40,7 @@ class PostProcessor {
   }
 
   processEpisode(Episode episode, Torrent torrent) async {
+    logger.info("Postprocessing Episode ${episode.seasonNumber} ${torrent.name}");
     await db.setTorrentProcessing(torrent.hash);
     Series s = await db.getSeries(episode.seriesId);
     String dir = path.join(conf.library_root, s.libraryLocation);
@@ -160,21 +163,21 @@ class PostProcessor {
         // Known Torrent (added by us)
         var related = await getRelatedContent(t.relatedContent);
         if (related is Episode) {
-          processEpisode(related, t);
+          await processEpisode(related, t);
         } else if (related is Series) {
-          processSeries(related, t);
+          await processSeries(related, t);
         } else if (related is String) {
           if (related.startsWith("season:")) {
             var parts = related.split(':');
             Series s = await db.getSeries(int.parse(parts[1]));
             if (s != null) {
-              processSeason(s, int.parse(parts[2]), t);
+              await processSeason(s, int.parse(parts[2]), t);
             }
           }
         }
       } else {
         // Unknown Torrent
-        processUnknown(t);
+        await processUnknown(t);
       }
     }
   }

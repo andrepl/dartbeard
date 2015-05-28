@@ -140,7 +140,15 @@ tr.episode-row td.number span.glyphicon {
     height: 40px;
     line-height: 40px;
     text-indent: 10px;
+    font-size:22px;
 }
+#sidebar-wrapper ul li.child {
+    font-size: 18px;
+    line-height: 30px;
+    height: 30px;
+    text-indent: 20px;
+}
+
 #sidebar-wrapper ul li span.nav-label {
     margin-left: 10px;
 }
@@ -149,7 +157,7 @@ tr.episode-row td.number span.glyphicon {
 }
 #sidebar-wrapper ul li a {
     color: #594f4f;
-    font-size:22px;
+
     text-decoration: none;
 }
 
@@ -336,6 +344,12 @@ div.series-detail-header div.lock-indicator {
 table.series-detail,table.series-settings {
     width: 100%;
 }
+table.series-detail th {
+    padding-right: 5px;
+}
+table.series-settings th {
+    padding-right: 5px;
+}
 
 div.rename-help {
     position: fixed;
@@ -368,11 +382,35 @@ table.series-detail th {
     text-align: right;
 }
 form.add-series-form {
+    display: flex;
+    flex-direction: column;
     max-width: 768px;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
     margin-left: auto;
     margin-right: auto;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+form.add-series-form .form-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
     padding: 5px;
+}
+
+form.add-series-form label {
+    display: block;
+    line-height: 26px;
+    padding-right: 5px;
+    flex: 1;
+    text-align: right;
+}
+form.add-series-form div.form-input {
+    display: block;
+    flex: 2;
+}
+
+form.add-series-form input, form.add-series-form select {
+    width: 100%;
+    height: 26px;
 }
 
 div.series-detail-poster-wrap {

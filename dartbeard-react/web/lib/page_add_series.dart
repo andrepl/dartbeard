@@ -32,21 +32,29 @@ class AddSeriesPage extends  Page {
 
   render() {
     List formContents = [
-      label({}, "Series Search: "),
-      input({'onChange': onSearchStringChange, 'value': state['searchString']}),
+      div({'className': 'form-row'}, [
+        label({}, "Series Search: "),
+        div({'className': 'form-input'}, input({'onChange': onSearchStringChange, 'value': state['searchString']}))
+      ]),
     ];
 
     var available = state['availableDirectories'];
     if (available.length > 0) {
       print("AVAIL DIRS: ${available.length} $available");
-      formContents.insert(0, select({'onChange': onDirectoryChange, 'value': state['selectedDirectory']}, state['availableDirectories'].map((d) => option({'value': d}, d))));
-      formContents.insert(0, label({}, "Existing Directory: "));
+
+      formContents.insert(0, div({'className': 'form-row'}, [
+        label({}, "Existing Directory: "),
+        div({'className': 'form-input'},
+          select({'onChange': onDirectoryChange,
+            'value': state['selectedDirectory']
+          }, state['availableDirectories'].map((d) => option({'value': d}, d))))
+      ]));
     }
 
     return div({'className': ''}, [
       getHeader("Add New Series", null),
       div({'className': 'scroll-pane', 'key': 'scroll-pane'}, new List.from([
-        form({'className': 'add-series-form'}, formContents)
+        form({'className': 'add-series-form', 'onSubmit': (SyntheticFormEvent e) => e.preventDefault()}, formContents)
       ])..addAll(renderResults()))
     ]);
   }

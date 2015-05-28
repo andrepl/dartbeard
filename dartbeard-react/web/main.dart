@@ -14,9 +14,18 @@ import 'lib/websocket_client.dart';
 import 'lib/dbcomponents.dart';
 
 class NavItem extends Component {
+  getDefaultProps() => {'child': false};
   void render() {
     print(this.props);
-    return li({'className': this.props['active'] ? 'active' : ''},
+    String cls = this.props['active'] ? 'active' : '';
+    if (this.props['child']) {
+      if (cls.length > 0) {
+        cls += ' ';
+      }
+      cls += 'child';
+    }
+
+    return li({'className': cls},
     a({'href': this.props['href'], }, [
       span({'className': 'glyphicon glyphicon-' + this.props['icon']}),
       span({'className': 'nav-label'}, this.props['label'])
@@ -31,6 +40,7 @@ class App extends Component {
   Function currentPageComponent;
   WebSocketClient ws = new WebSocketClient("ws://${window.location.hostname}:8000/ws/");
   Map currentPageParams = {};
+  Series selectedSeries = null;
 
   void onNotify(WebSocketEvent event) {
     this.ref('growler').add(event.data);
@@ -72,7 +82,7 @@ class App extends Component {
     router.listen();
   }
 
-  void enterRoute(RouteEnterEvent event) {
+  void enterRoute(RouteEnterEvent event) async {
     print("route name ${event.route.name}");
     if (event.route.name == 'upcoming') {
       this.currentPageComponent = upcomingPage;
@@ -86,6 +96,8 @@ class App extends Component {
     } else if (event.route.name == 'series-detail') {
       this.currentPageComponent = seriesDetailPage;
       this.currentPageParams = event.parameters;
+      var resp = await ws.rpc('get_series', args: {'id': int.parse(event.parameters['seriesId'])});
+      this.selectedSeries = new Series.fromMap(resp['result']);
     } else if (event.route.name == 'settings') {
       this.currentPageComponent = settingsPage;
       this.currentPageParams = {};
@@ -134,28 +146,42 @@ class App extends Component {
     setState({'modal': null});
   }
 
+  renderNav() {
+    var seriesDetailNavItem = null;
+    if (this.state['currentRoute'] == 'series-detail') {
+      seriesDetailNavItem = navItem({
+        'child': true,
+        'active': true,
+        'icon': 'option-horizontal',
+        'href': '#series/${selectedSeries.id}',
+        'label': '${selectedSeries.name}'
+      });
+    }
+
+    return ul({'className': 'sidebar-nav'}, [
+      li({'className': 'sidebar-brand'}, a({'href': '#'}, "DartBeard")),
+      navItem({'icon': 'time',
+        'href': '#upcoming',
+        'label': 'Upcoming',
+        'active': this.state['currentRoute'] == 'upcoming'}),
+      navItem({'icon': 'list-alt',
+        'href': '#series-list',
+        'label': "All Series",
+        'active': this.state['currentRoute'] == 'series-list'}),
+      seriesDetailNavItem,
+      navItem({'icon': 'search',
+        'href': '#add-series',
+        'label': "Add Series",
+        'active': this.state['currentRoute'] == 'add-series'}),
+      navItem({'icon': 'cog',
+        'href': '#settings',
+        'label': "Settings",
+        'active': this.state['currentRoute'] == 'settings'})
+    ]);
+  }
+
   render() => div({'className': 'app-main'}, [
-    div({'id': 'sidebar-wrapper'}, [
-      ul({'className': 'sidebar-nav'}, [
-        li({'className': 'sidebar-brand'}, a({'href': '#'}, "DartBeard")),
-        navItem({'icon': 'time',
-                 'href': '#upcoming',
-                 'label': 'Upcoming',
-                 'active': this.state['currentRoute'] == 'upcoming'}),
-        navItem({'icon': 'list-alt',
-                 'href': '#series-list',
-                 'label': "All Series",
-                 'active': this.state['currentRoute'] == 'series-list'}),
-        navItem({'icon': 'search',
-                 'href': '#add-series',
-                 'label': "Add Series",
-                 'active': this.state['currentRoute'] == 'add-series'}),
-        navItem({'icon': 'cog',
-                 'href': '#settings',
-                 'label': "Settings",
-                 'active': this.state['currentRoute'] == 'settings'})
-      ])
-    ]),
+    div({'id': 'sidebar-wrapper'}, renderNav()),
     div({'id': 'page-content-wrapper'}, currentPageComponent == null ? "" : currentPageComponent(pageParams)),
     growlContainer({'key': 'growler', 'ref': "growler"}),
     torrentForm({'opened': state['modal'] != null, 'close': closeTorrentForm, 'torrentInfo': state['modal'], 'onSubmit': onAddTorrent})

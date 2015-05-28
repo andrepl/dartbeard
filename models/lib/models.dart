@@ -266,6 +266,7 @@ class Episode {
       'director': director,
       'status': status,
       'series': series == null ? null : series.toMap()
+
     };
   }
 
@@ -336,23 +337,29 @@ class Torrent {
   }
 
   updateFromMap(Map json) {
-    name = json["name"];
+    if (json.containsKey('name')) name = json["name"];
     hash = json.containsKey("hash") ? json["hash"] : json['hashString'];
     errorString = json["errorString"];
-    status = json["status"];
-    totalPeers = json.containsKey('peers') ? json["peers"].length : json["totalPeers"];
-    connectedPeers = json.containsKey("peersConnected") ? json['peersConnected'] : json['connectedPeers'];
-    lastActive = json.containsKey('activityDate') ? _toDt(json["activityDate"]) : _toDt(json['lastActive']);
-    startedAt = json.containsKey('startDate') ? _toDt(json["startDate"]) : _toDt(json['startedAt']);
-    addedAt = json.containsKey('addedDate') ? _toDt(json["addedDate"]) : _toDt(json['addedAt']);
-    finishedAt = json.containsKey('doneDate') ? _toDt(json["doneDate"]) : _toDt(json['finishedAt']);
-    downloadDir = json['downloadDir'] == null ? null : new Directory(json["downloadDir"]);
-    rateDownload = json["rateDownload"];
-    relatedContent = json['relatedContent'];
-    processed = json['processed'];
-    rateUpload  = json["rateUpload"];
-    totalSize = json["totalSize"];
-    leftUntilDone = json["leftUntilDone"];
+    if (json.containsKey('status')) status = json["status"];
+    if (json.containsKey('peers')) totalPeers = json["peers"].length;
+    if (json.containsKey('totalPeers')) totalPeers = json["totalPeers"];
+    if (json.containsKey("peersConnected")) connectedPeers = json['peersConnected'];
+    if (json.containsKey('connectedPeers')) connectedPeers = json['connectedPeers'];
+    if (json.containsKey('activityDate')) lastActive = _toDt(json['activityDate']);
+    if (json.containsKey('lastActive')) lastActive = _toDt(json['lastActive']);
+    if (json.containsKey('startDate')) startedAt = _toDt(json["startDate"]);
+    if (json.containsKey('startedAt')) startedAt = _toDt(json['startedAt']);
+    if (json.containsKey('addedDate')) addedAt =  _toDt(json["addedDate"]);
+    if (json.containsKey('addedAt')) addedAt = _toDt(json['addedAt']);
+    if (json.containsKey('doneDate')) finishedAt = _toDt(json["doneDate"]);
+    if (json.containsKey('finishedAt')) finishedAt = _toDt(json['finishedAt']);
+    if (json.containsKey('downloadDir')) downloadDir = json['downloadDir'] == null ? null : new Directory(json["downloadDir"]);
+    if (json.containsKey('rateDownload')) rateDownload = json["rateDownload"];
+    if (json.containsKey('relatedContent')) relatedContent = json['relatedContent'];
+    if (json.containsKey('processed')) processed = json['processed'];
+    if (json.containsKey('rateUpload')) rateUpload = json["rateUpload"];
+    if (json.containsKey('totalSize')) totalSize = json["totalSize"];
+    if (json.containsKey('leftUntilDone')) leftUntilDone = json["leftUntilDone"];
     bytesDownloaded = totalSize - leftUntilDone;
 
   }
