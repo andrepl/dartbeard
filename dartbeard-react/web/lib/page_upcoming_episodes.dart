@@ -38,16 +38,16 @@ class UpcomingPage extends Page {
     List result = [];
     String lastDate = null;
     Map relativeHeaders = {
-      new DateFormat("YYYYMMdd").format(new DateTime.now().subtract(new Duration(days:1))): 'Yesterday',
-      new DateFormat("YYYYMMdd").format(new DateTime.now()): 'Today',
-      new DateFormat("YYYYMMdd").format(new DateTime.now().add(new Duration(days:1))): 'Tomorrow'
+      new DateFormat("yyyyMMdd").format(new DateTime.now().subtract(new Duration(days:1))): 'Yesterday',
+      new DateFormat("yyyyMMdd").format(new DateTime.now()): 'Today',
+      new DateFormat("yyyyMMdd").format(new DateTime.now().add(new Duration(days:1))): 'Tomorrow'
     };
 
     for (Episode e in this.state['episodeList']) {
       if (!episodeMatch(e)) continue;
       if (lastDate == null || lastDate != e.firstAiredDate) {
         String dateStr = e.formatFirstAired('EEEE, MMM d');
-        var epDate = e.formatFirstAired('YYYYMMdd');
+        var epDate = e.formatFirstAired('yyyyMMdd');
         if (relativeHeaders.containsKey(epDate)) {
           dateStr += ' [${relativeHeaders[epDate]}]';
         }

@@ -99,7 +99,7 @@ class Series {
     if (firstAired == null) {
       return '99990101';
     } else {
-      return formatFirstAired('YYYYMMdd');
+      return formatFirstAired('yyyyMMdd');
     }
   }
   Series();
