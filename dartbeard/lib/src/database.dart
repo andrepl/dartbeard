@@ -164,6 +164,9 @@ class Database {
       var vars = torrentFields.where((k) => data.containsKey(k)).map((k) => "@${k}").join(", ");
       var fields = torrentFields.where((k) => data.containsKey(k)).map((f) => '"$f"').join(", ");
       query = "insert into torrent (${fields}) VALUES (${vars});";
+      print("Inserting Torrent ", query);
+      print(data);
+      print("--");
     } else {
       query = "update torrent set ";
       var updates = [];
@@ -172,9 +175,9 @@ class Database {
           updates.add('"$k" = @$k');
         }
       });
-
       query += updates.join(", ");
       query += " where hash = @hash";
+
     }
     await conn.execute(query, data);
     conn.close();
