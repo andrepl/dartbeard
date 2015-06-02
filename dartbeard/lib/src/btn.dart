@@ -17,15 +17,24 @@ class BTN {
 
   Future<HttpClientResponse> request(method, args) async {
     String req = JSON.encode({'method': method, 'params': args, 'id': 'accd', 'jsonrpc': '2.0'});
-    HttpClientRequest request = await client.postUrl(Uri.parse("http://api.btnapps.net/"));
-    request.headers.add("Content-type", "application/json");
-    request.write(req);
-    HttpClientResponse response = await request.close();
+    try {
+      HttpClientRequest request = await client.postUrl(Uri.parse("http://api.btnapps.net/"));
+      request.headers.add("Content-type", "application/json");
+      request.write(req);
+      HttpClientResponse response = await request.close();
+    } catch (err) {
+      console.warn("Failed to reach BTN");
+      console.warn(err);
+      return null;
+    }
     return response;
   }
 
   search(query) async {
     HttpClientResponse resp = await request("getTorrents", [apiKey, query, 1000, 0]);
+    if (resp == null) {
+      return [];
+    }
     Map response;
     try {
       response = JSON.decode((await UTF8.decodeStream(resp)));
