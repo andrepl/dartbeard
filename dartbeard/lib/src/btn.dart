@@ -17,11 +17,12 @@ class BTN {
 
   Future<HttpClientResponse> request(method, args) async {
     String req = JSON.encode({'method': method, 'params': args, 'id': 'accd', 'jsonrpc': '2.0'});
+    HttpClientResponse response;
     try {
       HttpClientRequest request = await client.postUrl(Uri.parse("http://api.btnapps.net/"));
       request.headers.add("Content-type", "application/json");
       request.write(req);
-      HttpClientResponse response = await request.close();
+      response = await request.close();
     } catch (err) {
       console.warn("Failed to reach BTN");
       console.warn(err);
