@@ -165,7 +165,7 @@ class Database {
       var fields = torrentFields.where((k) => data.containsKey(k)).map((f) => '"$f"').join(", ");
       query = "insert into torrent (${fields}) VALUES (${vars});";
       print("Inserting Torrent ", query);
-      print(data);
+      print(data.toString());
       print("--");
     } else {
       query = "update torrent set ";
