@@ -13,7 +13,7 @@ import 'package:dartbeard/src/util.dart';
 import 'package:dartbeard/src/btn.dart';
 
 class Transmission {
-
+  Logger logger = new Logger("dartbeard");
   static List<String> TORRENT_FIELDS = ["name", "hashString", "leftUntilDone", "totalSize", "status",
     "peers", "peersConnected", "activityDate", "downloadDir", "trackers"
     "doneDate", "startDate", "addedDate", "rateDownload", "rateUpload"];
@@ -93,11 +93,15 @@ class Transmission {
       t.hash = args['torrent-added']['hashString'];
       t.name = args['torrent-added']['name'];
       torrents[args['torrent-added']['hashString']] = t;
-      await db.insertOrUpdateTorrent(args['torrent-added']['hashString'], {
+      var data = {
         'hash': args['torrent-added']['hashString'],
         'name': args['torrent-added']['name'],
         'relatedContent': relatedContent
-      });
+      };
+      logger.fine("Inserting/Updating torrent: ${data.hash}, ${data.name}, ${data.relatedContent}");
+      await db.insertOrUpdateTorrent(args['torrent-added']['hashString'], data);
+    } else {
+      logger.warn("Add Torrent Failed with: ${resp}");
     }
     return args;
   }
