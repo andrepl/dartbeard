@@ -6,6 +6,7 @@ import "dart:core";
 import "dart:io";
 import "package:path/path.dart" as path;
 import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
 import 'package:models/models.dart';
 
 import 'package:dartbeard/src/conf.dart';
