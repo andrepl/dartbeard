@@ -10,6 +10,7 @@ dependencies:
   intl: '>=0.12.2'
   path: ">=1.3.5"
   logging: '>=0.11.1'
+  crypto: '>=0.9.0'
   logging_handlers: '>=0.8.0'
   mime: any
   models:

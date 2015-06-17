@@ -4,6 +4,8 @@ import "dart:async";
 import "dart:convert";
 import "dart:core";
 import "dart:io";
+
+import "package:crypto/crypto.dart";
 import "package:path/path.dart" as path;
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
@@ -12,6 +14,7 @@ import 'package:models/models.dart';
 import 'package:dartbeard/src/conf.dart';
 import 'package:dartbeard/src/util.dart';
 import 'package:dartbeard/src/btn.dart';
+
 
 class Transmission {
   Logger logger = new Logger("dartbeard");
@@ -76,15 +79,16 @@ class Transmission {
   }
 
   addTorrent(url, relatedContent) async {
-    String type = null;
-    if (url.startsWith("data:")) {
+    String data = null;
+    if (!url.startsWith("data:")) {
       int pos = url.indexOf(',');
-      url = url.substring(pos + 1);
-      type = 'metainfo';
+      data = url.substring(pos + 1);
     } else {
-      type = 'filename';
+      http.Response response = await http.get(url);
+      data = CryptoUtils.bytesToBase64(response.bodyBytes);
     }
-    var resp = await request("torrent-add", {type: url});
+    logger.finer("Adding Torrent Data: ${data}");
+    var resp = await request("torrent-add", {'metainfo': data});
     Map respMap = JSON.decode(resp.body);
 
     Map args = respMap['arguments'];
