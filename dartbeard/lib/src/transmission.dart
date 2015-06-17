@@ -87,7 +87,7 @@ class Transmission {
       int pos = url.indexOf(',');
       data = url.substring(pos + 1);
     }
-    logger.finer("Adding Torrent Data: ${data}");
+    
     var resp = await request("torrent-add", {'metainfo': data});
     Map respMap = JSON.decode(resp.body);
 
