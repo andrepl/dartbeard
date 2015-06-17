@@ -102,7 +102,7 @@ class Transmission {
       logger.fine("Inserting/Updating torrent: ${data['hash']}, ${data['name']}, ${data['relatedContent']}");
       await db.insertOrUpdateTorrent(args['torrent-added']['hashString'], data);
     } else {
-      logger.warning("Add Torrent Failed with: ${resp}");
+      logger.warning("Add Torrent Failed with: ${respMap}");
     }
     return args;
   }
