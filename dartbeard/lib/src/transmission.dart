@@ -81,11 +81,11 @@ class Transmission {
   addTorrent(url, relatedContent) async {
     String data = null;
     if (!url.startsWith("data:")) {
-      int pos = url.indexOf(',');
-      data = url.substring(pos + 1);
-    } else {
       http.Response response = await http.get(url);
       data = CryptoUtils.bytesToBase64(response.bodyBytes);
+    } else {
+      int pos = url.indexOf(',');
+      data = url.substring(pos + 1);
     }
     logger.finer("Adding Torrent Data: ${data}");
     var resp = await request("torrent-add", {'metainfo': data});
