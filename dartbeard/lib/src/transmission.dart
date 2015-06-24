@@ -33,6 +33,7 @@ class Transmission {
   int port;
   String connectionError;
   var db;
+  bool adding = false;
 
   Transmission();
 
@@ -79,6 +80,7 @@ class Transmission {
   }
 
   addTorrent(url, relatedContent) async {
+    adding = true;
     String data = null;
     if (!url.startsWith("data:")) {
       http.Response response = await http.get(url);
@@ -108,10 +110,14 @@ class Transmission {
     } else {
       logger.warning("Add Torrent Failed with: ${respMap}");
     }
+    adding = false;
     return args;
   }
 
   updateTorrents() async {
+    if (adding) {
+      return;
+    }
     var resp = await request("torrent-get", {"fields": TORRENT_FIELDS});
     if (resp != null) {
       Map rawList = JSON.decode(resp.body);
